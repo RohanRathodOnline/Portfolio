@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupThemeToggle();
     setupEducationDetailsToggle();
     setupScrollProgress();
+    setupBackToTop();
+    setupModal();
 });
  
  /* ================================ */
@@ -233,7 +235,7 @@ function setupContactForm() {
             await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
             // Show success message
-            alert('✅ Message sent! I will reply as soon as possible.');
+            showSuccessModal();
             contactForm.reset();
 
         } catch (error) {
@@ -399,5 +401,41 @@ function setupBackToTop() {
             top: 0,
             behavior: 'smooth'
         });
+    });
+}
+
+/* ================================ */
+/* Success Modal                   */
+/* ================================ */
+
+function setupModal() {
+    // Modal functionality is handled in showSuccessModal
+}
+
+function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    const okBtn = document.getElementById('modalOkBtn');
+
+    if (!modal) return;
+
+    modal.classList.add('show');
+
+    // Close modal on OK button click
+    okBtn.addEventListener('click', () => {
+        modal.classList.remove('show');
+    });
+
+    // Close modal on overlay click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+            modal.classList.remove('show');
+        }
     });
 }

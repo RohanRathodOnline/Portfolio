@@ -1162,3 +1162,156 @@ body {
 .back-to-top:active {
     transform: translateY(0);
 }
+
+/* ================================ */
+/* Success Modal                   */
+/* ================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 40px rgba(45, 212, 191, 0.1);
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    animation: modalGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes modalGlow {
+    0% { box-shadow: 0 0 20px rgba(45, 212, 191, 0.3); }
+    100% { box-shadow: 0 0 30px rgba(163, 113, 247, 0.4); }
+}
+
+.modal-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 8px 25px rgba(45, 212, 191, 0.3);
+    animation: iconPulse 0.6s ease-out;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.modal-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: white;
+    stroke-width: 2.5;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.modal-message {
+    font-size: 1rem;
+    color: var(--muted-foreground);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.modal-ok-btn {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: calc(var(--radius) - 0.25rem);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.3);
+}
+
+.modal-ok-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4);
+}
+
+.modal-ok-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-message {
+        font-size: 0.95rem;
+    }
+
+    .modal-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .modal-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+}
