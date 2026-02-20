@@ -15,8 +15,6 @@
     --muted-foreground: #6e767d;
     --accent: #a371f7;
     --accent-foreground: #f0f6fc;
-    --destructive: #f85149;
-    --destructive-foreground: #fafbfc;
     --border: #30363d;
     --input: #30363d;
     --radius: 0.75rem;
@@ -62,6 +60,90 @@ body {
     background: var(--background);
     color: var(--foreground);
     line-height: 1.6;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    html,
+    body,
+    body * {
+        cursor: none !important;
+    }
+
+    .custom-cursor {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        --cursor-rotation: 0deg;
+        --cursor-scale: 1;
+        transform: translate(-50%, -50%) rotate(var(--cursor-rotation)) scale(var(--cursor-scale));
+        pointer-events: none;
+        z-index: 10001;
+        opacity: 1;
+        transition: transform 0.18s ease, opacity 0.2s ease;
+    }
+
+    .custom-cursor::before {
+        content: '🐟';
+        font-size: 12px;
+        line-height: 1;
+        filter: drop-shadow(0 0 2px rgba(125, 211, 252, 0.6));
+    }
+
+    .cursor-trail-bubble {
+        position: fixed;
+        width: var(--bubble-size, 7px);
+        height: var(--bubble-size, 7px);
+        border-radius: 50%;
+        border: 1px solid rgba(186, 230, 253, 0.8);
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(125, 211, 252, 0.22) 58%, rgba(125, 211, 252, 0.05));
+        transform: translate(-50%, -50%) scale(0.45);
+        pointer-events: none;
+        z-index: 9998;
+        animation: swim-bubble var(--bubble-duration, 0.7s) ease-out forwards;
+    }
+
+    .custom-cursor.is-hovering {
+        --cursor-scale: 1.35;
+        animation: cursor-bubble 0.45s ease-out infinite alternate;
+    }
+
+    @keyframes cursor-bubble {
+        from {
+            box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.4);
+        }
+        to {
+            box-shadow: 0 0 0 10px rgba(125, 211, 252, 0);
+        }
+    }
+
+    body.light .custom-cursor.is-hovering {
+        animation: cursor-bubble-light 0.45s ease-out infinite alternate;
+    }
+
+    @keyframes cursor-bubble-light {
+        from {
+            box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.35);
+        }
+        to {
+            box-shadow: 0 0 0 10px rgba(125, 211, 252, 0);
+        }
+    }
+
+    @keyframes swim-bubble {
+        from {
+            opacity: 0.85;
+            transform: translate(-50%, -50%) scale(0.45);
+        }
+        to {
+            opacity: 0;
+            transform: translate(calc(-50% + var(--bubble-drift-x, 0px)), calc(-50% + var(--bubble-drift-y, -18px))) scale(1.3);
+        }
+    }
 }
 
 ::selection {
@@ -179,6 +261,15 @@ body {
     height: 32px;
     width: auto;
     display: block;
+    transition: opacity 0.25s ease, width 0.35s ease, height 0.35s ease, border-radius 0.35s ease;
+}
+
+.navbar-logo-img.profile-photo-mode {
+    width: 32px;
+    height: 32px;
+    border-radius: 50% !important;
+    object-fit: cover;
+    padding: 0 !important;
 }
 
 .navbar-avatar-fallback {
@@ -346,6 +437,17 @@ body {
     box-shadow: 0 8px 30px rgba(2,6,23,0.25);
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
     animation: float 3s ease-in-out infinite;
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity;
+}
+
+.hero-profile.morph-stable {
+    animation: none;
+    transform: translateY(0);
+}
+
+.hero-profile.morph-hidden {
+    opacity: 0;
 }
 
 @keyframes float {

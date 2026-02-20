@@ -74,8 +74,10 @@ function extractErrorMessage(err) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    setupCustomCursor();
     populateSkills();
     setupNavbar();
+    setupProfileToLogoTransition();
     setupMobileMenu();
     setupContactForm();
     setupIntersectionObserver();
@@ -137,6 +139,144 @@ function setupNavbar() {
             }
         });
     });
+}
+
+function setupProfileToLogoTransition() {
+    const heroProfile = document.querySelector('.hero-profile');
+    const heroProfileImg = document.querySelector('.hero-profile-img');
+    const navbarLogoImg = document.querySelector('.navbar-logo-img');
+
+    if (!heroProfile || !heroProfileImg || !navbarLogoImg) return;
+
+    const originalLogoSrc = navbarLogoImg.getAttribute('src');
+    const originalLogoAlt = navbarLogoImg.getAttribute('alt') || 'Roha logo';
+    const profileSrc = heroProfileImg.getAttribute('src');
+    const profileAlt = heroProfileImg.getAttribute('alt') || 'Profile photo';
+
+    navbarLogoImg.style.transition = 'opacity 0.25s ease, width 0.35s ease, height 0.35s ease, border-radius 0.35s ease';
+
+    let isInLogoPosition = false;
+    let isAnimating = false;
+    let logoSwapTimeoutId = null;
+    const enterLogoScrollY = 150;
+    const exitLogoScrollY = 85;
+
+    const animateImageBetweenRects = (fromRect, toRect, imageSrc, imageAlt, onComplete) => {
+        const clone = document.createElement('img');
+        clone.src = imageSrc;
+        clone.alt = imageAlt;
+        clone.style.position = 'fixed';
+        clone.style.left = `${fromRect.left}px`;
+        clone.style.top = `${fromRect.top}px`;
+        clone.style.width = `${fromRect.width}px`;
+        clone.style.height = `${fromRect.height}px`;
+        clone.style.borderRadius = '50%';
+        clone.style.objectFit = 'cover';
+        clone.style.margin = '0';
+        clone.style.pointerEvents = 'none';
+        clone.style.zIndex = '12000';
+        clone.style.boxShadow = '0 10px 24px rgba(2, 6, 23, 0.25)';
+        clone.style.opacity = '0.98';
+        clone.style.transition = 'left 0.72s cubic-bezier(0.22, 1, 0.36, 1), top 0.72s cubic-bezier(0.22, 1, 0.36, 1), width 0.72s cubic-bezier(0.22, 1, 0.36, 1), height 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease';
+        document.body.appendChild(clone);
+
+        requestAnimationFrame(() => {
+            clone.style.left = `${toRect.left}px`;
+            clone.style.top = `${toRect.top}px`;
+            clone.style.width = `${toRect.width}px`;
+            clone.style.height = `${toRect.height}px`;
+        });
+
+        let finished = false;
+        const cleanup = () => {
+            if (finished) return;
+            finished = true;
+            clone.remove();
+            if (typeof onComplete === 'function') onComplete();
+        };
+
+        clone.addEventListener('transitionend', cleanup, { once: true });
+        window.setTimeout(cleanup, 900);
+    };
+
+    const swapNavbarLogo = (src, alt, addProfileMode) => {
+        if (logoSwapTimeoutId) {
+            window.clearTimeout(logoSwapTimeoutId);
+            logoSwapTimeoutId = null;
+        }
+
+        navbarLogoImg.style.opacity = '0';
+
+        logoSwapTimeoutId = window.setTimeout(() => {
+            navbarLogoImg.setAttribute('src', src);
+            navbarLogoImg.setAttribute('alt', alt);
+            navbarLogoImg.classList.toggle('profile-photo-mode', addProfileMode);
+            navbarLogoImg.style.opacity = '1';
+            logoSwapTimeoutId = null;
+        }, 90);
+    };
+
+    const setHeroMorphState = (hidden) => {
+        heroProfile.classList.add('morph-stable');
+        heroProfile.classList.toggle('morph-hidden', hidden);
+        heroProfile.style.pointerEvents = hidden ? 'none' : 'auto';
+    };
+
+    const resetHeroMorphState = () => {
+        heroProfile.classList.remove('morph-hidden');
+        heroProfile.classList.remove('morph-stable');
+        heroProfile.style.pointerEvents = 'auto';
+    };
+
+    const moveToLogo = () => {
+        if (isInLogoPosition || isAnimating) return;
+        isAnimating = true;
+
+        const fromRect = heroProfile.getBoundingClientRect();
+        const toRect = navbarLogoImg.getBoundingClientRect();
+
+        setHeroMorphState(true);
+
+        animateImageBetweenRects(fromRect, toRect, profileSrc, profileAlt, () => {
+            swapNavbarLogo(profileSrc, profileAlt, true);
+            isInLogoPosition = true;
+            isAnimating = false;
+        });
+    };
+
+    const moveBackToHero = () => {
+        if (!isInLogoPosition || isAnimating) return;
+        isAnimating = true;
+
+        const fromRect = navbarLogoImg.getBoundingClientRect();
+
+        setHeroMorphState(true);
+
+        const toRect = heroProfile.getBoundingClientRect();
+
+        animateImageBetweenRects(fromRect, toRect, profileSrc, profileAlt, () => {
+            swapNavbarLogo(originalLogoSrc, originalLogoAlt, false);
+
+            requestAnimationFrame(() => {
+                resetHeroMorphState();
+                isInLogoPosition = false;
+                isAnimating = false;
+            });
+        });
+    };
+
+    const onScroll = () => {
+        if (isAnimating) return;
+
+        if (!isInLogoPosition && window.scrollY > enterLogoScrollY) {
+            moveToLogo();
+        } else if (isInLogoPosition && window.scrollY < exitLogoScrollY) {
+            moveBackToHero();
+        }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 }
 
 function setupMobileMenu() {
@@ -281,6 +421,110 @@ function setupIntersectionObserver() {
 
 function setCurrentYear() {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
+}
+
+function setupCustomCursor() {
+    const cursor = document.querySelector('.custom-cursor');
+
+    if (!cursor) return;
+
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!finePointer) {
+        cursor.remove();
+        return;
+    }
+
+    const hoverTargets = 'a, button, [role="button"], input, textarea, select, .cta-button, .social-icon, .skill-card, .project-card';
+    let pointerX = 0;
+    let pointerY = 0;
+    let prevPointerX = null;
+    let prevPointerY = null;
+    let animationFrame = null;
+    let lastBubbleAt = 0;
+    const bubbleInterval = 26;
+    let swimAngle = 0;
+    let movementSpeed = 0;
+
+    const spawnTrailBubble = (x, y, angle) => {
+        const bubble = document.createElement('span');
+        bubble.className = 'cursor-trail-bubble';
+
+        const trailDistance = 8 + Math.random() * 8;
+        const spawnX = x - Math.cos(angle) * trailDistance + (Math.random() - 0.5) * 4;
+        const spawnY = y - Math.sin(angle) * trailDistance + (Math.random() - 0.5) * 4;
+        const bubbleSize = 4 + Math.random() * 5;
+        const driftX = (Math.random() - 0.5) * 14;
+        const driftY = -14 - Math.random() * 12;
+        const duration = 0.55 + Math.random() * 0.35;
+
+        bubble.style.left = `${spawnX}px`;
+        bubble.style.top = `${spawnY}px`;
+        bubble.style.setProperty('--bubble-size', `${bubbleSize}px`);
+        bubble.style.setProperty('--bubble-drift-x', `${driftX}px`);
+        bubble.style.setProperty('--bubble-drift-y', `${driftY}px`);
+        bubble.style.setProperty('--bubble-duration', `${duration}s`);
+
+        document.body.appendChild(bubble);
+        bubble.addEventListener('animationend', () => {
+            bubble.remove();
+        }, { once: true });
+    };
+
+    const paintCursor = () => {
+        cursor.style.left = `${pointerX}px`;
+        cursor.style.top = `${pointerY}px`;
+        animationFrame = null;
+    };
+
+    window.addEventListener('mousemove', (event) => {
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+
+        if (prevPointerX !== null && prevPointerY !== null) {
+            const deltaX = pointerX - prevPointerX;
+            const deltaY = pointerY - prevPointerY;
+            const movement = Math.hypot(deltaX, deltaY);
+            movementSpeed = movement;
+
+            if (movement > 0.5) {
+                swimAngle = Math.atan2(deltaY, deltaX);
+                const angleDeg = swimAngle * (180 / Math.PI);
+                cursor.style.setProperty('--cursor-rotation', `${angleDeg}deg`);
+            }
+        }
+
+        prevPointerX = pointerX;
+        prevPointerY = pointerY;
+
+        const now = performance.now();
+        if (now - lastBubbleAt >= bubbleInterval) {
+            spawnTrailBubble(pointerX, pointerY, swimAngle);
+
+            if (movementSpeed > 9 && Math.random() < 0.65) {
+                spawnTrailBubble(pointerX, pointerY, swimAngle);
+            }
+
+            lastBubbleAt = now;
+        }
+
+        if (!animationFrame) {
+            animationFrame = requestAnimationFrame(paintCursor);
+        }
+    }, { passive: true });
+
+    document.querySelectorAll(hoverTargets).forEach((element) => {
+        element.addEventListener('mouseenter', () => {
+            cursor.classList.add('is-hovering');
+        });
+
+        element.addEventListener('mouseleave', () => {
+            cursor.classList.remove('is-hovering');
+        });
+    });
+
+    document.addEventListener('mouseleave', () => {
+        cursor.classList.remove('is-hovering');
+    });
 }
 
 /* ================================ */
