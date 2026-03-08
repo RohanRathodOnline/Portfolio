@@ -1164,6 +1164,12 @@ body {
     justify-content: center;
 }
 
+.contact-info-bottom {
+    margin-top: 2rem;
+    text-align: center;
+    align-items: center;
+}
+
 .contact-info p {
     color: var(--muted-foreground);
     font-size: 1.125rem;
@@ -1195,6 +1201,30 @@ body {
     transform: translateY(-4px);
 }
 
+.feedback-panel {
+    max-width: 100%;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, rgba(45, 212, 191, 0.08), rgba(163, 113, 247, 0.04));
+}
+
+.feedback-panel-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: var(--foreground);
+}
+
+.feedback-panel-subtitle {
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+}
+
+.feedback-form {
+    display: grid;
+    gap: 1rem;
+}
+
 /* ================================ */
 /* Footer                           */
 /* ================================ */
@@ -1213,6 +1243,162 @@ body {
 .footer p {
     font-size: 0.875rem;
     color: var(--muted-foreground);
+}
+
+.footer-feedback {
+    max-width: 640px;
+    margin: 0 auto 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, rgba(45, 212, 191, 0.08), rgba(163, 113, 247, 0.04));
+}
+
+.footer-feedback-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: var(--foreground);
+}
+
+.footer-feedback-subtitle {
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+}
+
+.footer-feedback-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.rating-fieldset {
+    border: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* From Uiverse.io by SelfMadeSystem */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    --stroke: #666;
+    --fill: #ffc73a;
+}
+
+.rating input {
+    appearance: unset;
+    position: absolute;
+    opacity: 0;
+}
+
+.rating label {
+    cursor: pointer;
+}
+
+.rating svg {
+    width: 2rem;
+    height: 2rem;
+    overflow: visible;
+    fill: transparent;
+    stroke: var(--stroke);
+    stroke-linejoin: bevel;
+    stroke-dasharray: 12;
+    animation: idle 4s linear infinite;
+    transition: stroke 0.2s, fill 0.5s;
+}
+
+@keyframes idle {
+    from {
+        stroke-dashoffset: 24;
+    }
+}
+
+.rating label:hover svg,
+.rating label:hover ~ label svg {
+    stroke: var(--fill);
+}
+
+.rating input:checked ~ label svg {
+    transition: 0s;
+    animation: idle 4s linear infinite, yippee 0.75s backwards;
+    fill: var(--fill);
+    stroke: var(--fill);
+    stroke-opacity: 0;
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 8px;
+}
+
+@keyframes yippee {
+    0% {
+        transform: scale(1);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30% {
+        transform: scale(0);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30.1% {
+        stroke: var(--fill);
+        stroke-dasharray: 0;
+        stroke-linejoin: miter;
+        stroke-width: 8px;
+    }
+
+    60% {
+        transform: scale(1.2);
+        fill: var(--fill);
+    }
+}
+
+.feedback-status {
+    min-height: 1.2rem;
+    color: var(--muted-foreground);
+    font-size: 0.9rem;
+}
+
+.feedback-status.is-success {
+    color: var(--primary);
+}
+
+.feedback-status.is-error {
+    color: var(--destructive);
+}
+
+@media (max-width: 768px) {
+    .footer-feedback {
+        padding: 1rem;
+    }
+
+    .rating svg {
+        width: 1.75rem;
+        height: 1.75rem;
+    }
 }
 
 .footer-name {
@@ -1920,3 +2106,5 @@ body {
         height: 28px;
     }
 }
+
+

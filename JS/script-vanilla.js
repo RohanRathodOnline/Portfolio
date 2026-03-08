@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupScrollProgress();
     setupBackToTop();
     setupModal();
+    setupPortfolioFeedback();
 });
  
  /* ================================ */
@@ -440,6 +441,59 @@ function setupContactForm() {
             // Re-enable button
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
+        }
+    });
+}
+
+/* ================================ */
+/* Footer Feedback                 */
+/* ================================ */
+
+function setupPortfolioFeedback() {
+    const feedbackForm = document.getElementById('feedbackForm');
+    const feedbackStatus = document.getElementById('feedbackStatus');
+
+    if (!feedbackForm || !feedbackStatus) return;
+
+    feedbackForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const selectedRating = feedbackForm.querySelector('input[name="star-radio"]:checked');
+        const feedbackMessageEl = document.getElementById('feedbackMessage');
+        const feedbackMessage = feedbackMessageEl ? feedbackMessageEl.value.trim() : '';
+
+        feedbackStatus.classList.remove('is-success', 'is-error');
+
+        if (!selectedRating) {
+            feedbackStatus.textContent = 'Please choose a star rating first.';
+            feedbackStatus.classList.add('is-error');
+            return;
+        }
+
+        if (!feedbackMessage) {
+            feedbackStatus.textContent = 'Please write a short feedback message.';
+            feedbackStatus.classList.add('is-error');
+            return;
+        }
+
+        const feedbackPayload = {
+            rating: Number(selectedRating.value),
+            message: feedbackMessage,
+            createdAt: new Date().toISOString()
+        };
+
+        try {
+            const existing = JSON.parse(localStorage.getItem('portfolioFeedback') || '[]');
+            existing.push(feedbackPayload);
+            localStorage.setItem('portfolioFeedback', JSON.stringify(existing));
+
+            feedbackStatus.textContent = 'Thank you. Your rating and feedback were submitted.';
+            feedbackStatus.classList.add('is-success');
+            feedbackForm.reset();
+        } catch (error) {
+            console.error('Feedback storage error:', error);
+            feedbackStatus.textContent = 'Unable to submit feedback right now. Please try again.';
+            feedbackStatus.classList.add('is-error');
         }
     });
 }

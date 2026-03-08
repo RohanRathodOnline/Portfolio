@@ -332,8 +332,55 @@
                         Send Message
                     </button>
                 </form>
-                
-                <div class="contact-info fade-in">
+
+                <section class="feedback-panel fade-in" aria-labelledby="feedbackTitle">
+                    <h4 id="feedbackTitle" class="feedback-panel-title">Rate My Portfolio</h4>
+                    <p class="feedback-panel-subtitle">Share your genuine rating and feedback.</p>
+
+                    <form id="feedbackForm" class="feedback-form">
+                        <fieldset class="rating-fieldset">
+                            <legend class="sr-only">Choose your rating</legend>
+
+                            <div class="rating" role="radiogroup" aria-label="Portfolio rating">
+                                <input type="radio" id="star-5" name="star-radio" value="5">
+                                <label for="star-5" title="5 stars" aria-label="5 stars">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                </label>
+
+                                <input type="radio" id="star-4" name="star-radio" value="4">
+                                <label for="star-4" title="4 stars" aria-label="4 stars">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                </label>
+
+                                <input type="radio" id="star-3" name="star-radio" value="3">
+                                <label for="star-3" title="3 stars" aria-label="3 stars">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                </label>
+
+                                <input type="radio" id="star-2" name="star-radio" value="2">
+                                <label for="star-2" title="2 stars" aria-label="2 stars">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                </label>
+
+                                <input type="radio" id="star-1" name="star-radio" value="1">
+                                <label for="star-1" title="1 star" aria-label="1 star">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                                </label>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group">
+                            <label for="feedbackMessage">Feedback</label>
+                            <textarea id="feedbackMessage" name="feedbackMessage" rows="4" placeholder="Tell me what looks good and what I should improve..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="contact-button">Submit Feedback</button>
+                        <p id="feedbackStatus" class="feedback-status" aria-live="polite"></p>
+                    </form>
+                </section>
+            </div>
+
+            <div class="contact-info fade-in contact-info-bottom">
                     <p>
                         Feel free to reach out for collaborations, project ideas, or just to say hi! I'm always open to connecting with fellow developers and tech enthusiasts.
                     </p>
@@ -362,7 +409,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
 
