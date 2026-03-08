@@ -3,29 +3,19 @@
 /* ================================ */
 
 // Skills Data
-const skills = {
-    "Programming Languages": [
-        { name: "C", level: "intermediate", desc: "System Programming" },
-        { name: "C++", level: "intermediate", desc: "OOP & Data Structures" },
-        { name: "Java", level: "beginner", desc: "Object-Oriented Programming" },
-        { name: "JavaScript", level: "intermediate", desc: "Web Development" },
-        { name: "PHP", level: "beginner", desc: "Server-Side Scripting" }
-    ],
-    "Frontend": [
-        { name: "HTML", level: "intermediate", desc: "Semantic Markup" },
-        { name: "CSS", level: "intermediate", desc: "Responsive Design" },
-        { name: "JavaScript", level: "intermediate", desc: "DOM Manipulation" },
-        { name: "React", level: "beginner", desc: "Component Libraries" },
-        { name: "Bootstrap", level: "intermediate", desc: "CSS Framework" }
-    ],
-    "Databases": [
-        { name: "SQL", level: "intermediate", desc: "Query Optimization" },
-        { name: "DBMS", level: "intermediate", desc: "Database Design" },
-        { name: "MySQL", level: "beginner", desc: "Relational Database" },
-        { name: "MongoDB", level: "beginner", desc: "NoSQL Database" },
-        { name: "PostgreSQL", level: "beginner", desc: "Advanced SQL" }
-    ]
-};
+const skills = [
+    { name: "C++", desc: "OOP & Data Structures" },
+    { name: "Java", desc: "Object-Oriented Programming" },
+    { name: "C", desc: "Programming Language" },
+    { name: "JavaScript", desc: "Web Development" },
+    { name: "HTML", desc: "Markup Language" },
+    { name: "CSS", desc: "Styling & Layouts" },
+    { name: "PHP", desc: "Server-Side Scripting" },
+    { name: "SQL", desc: "Database Queries" },
+    { name: "DBMS", desc: "Database Management" },
+    { name: "OOP", desc: "Design Principles" },
+    { name: "Front-End Dev", desc: "HTML, CSS, JS" },
+];
 
 /* ================================ */
 /* EmailJS Configuration (replace)  */
@@ -39,6 +29,10 @@ const skills = {
 const EMAILJS_PUBLIC_KEY = 'LJ_XX89TpHf54s_P8';
 const EMAILJS_SERVICE_ID = 'service_js5crgd';
 const EMAILJS_TEMPLATE_ID = 'template_hvbzxjy';
+
+const SUPABASE_URL = 'https://szawrjbnkbvjtouwvtsk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YXdyamJua2J2anRvdXd2dHNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NTg2NjQsImV4cCI6MjA4ODUzNDY2NH0.PYqg4Ex4oYknb4ZLJMHLBo74JlKCYrQ_sQuO4s3Yd4U';
+const FEEDBACK_TABLE = 'Feedback';
 
 let _emailjsLoaded = false;
 function loadEmailJSSDK() {
@@ -94,9 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setCurrentYear();
     setupThemeToggle();
     setupEducationDetailsToggle();
-    setupScrollProgress();
-    setupBackToTop();
-    setupModal();
     setupPortfolioFeedback();
 });
  
@@ -317,56 +308,12 @@ function setupMobileMenu() {
 
 function populateSkills() {
     const skillsGrid = document.getElementById('skillsGrid');
-    let html = '';
-    let index = 0;
-
-    // Category icons
-    const categoryIcons = {
-        "Programming Languages": `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`,
-        "Frontend": `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
-            <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
-            <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
-        </svg>`,
-        "Databases": `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/>
-            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/>
-            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/>
-        </svg>`,
-        "Tools & Technologies": `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`
-    };
-
-    for (const [category, skillList] of Object.entries(skills)) {
-        const icon = categoryIcons[category] || '';
-        html += `<div class="skill-category">
-            <h3 class="skill-category-title">
-                <span class="category-icon">${icon}</span>
-                ${category}
-            </h3>
-            <div class="skill-category-grid">`;
-
-        skillList.forEach(skill => {
-            html += `
-                <div class="skill-card fade-in" style="animation-delay: ${index * 0.07}s">
-                    <h4>${skill.name}</h4>
-                    <p>${skill.desc}</p>
-                    <span class="skill-level ${skill.level.toLowerCase()}">${skill.level}</span>
-                </div>`;
-            index++;
-        });
-
-        html += `</div></div>`;
-    }
-
-    skillsGrid.innerHTML = html;
+    skillsGrid.innerHTML = skills.map((skill, index) => `
+        <div class="skill-card fade-in" style="animation-delay: ${index * 0.07}s">
+            <h4>${skill.name}</h4>
+            <p>${skill.desc}</p>
+        </div>
+    `).join('');
 }
 
 /* ================================ */
@@ -375,11 +322,63 @@ function populateSkills() {
 
 function setupContactForm() {
     const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('contactSubmitBtn');
     
-    if (!contactForm) {
+    if (!contactForm || !submitBtn) {
         console.warn('Contact form not found');
         return;
     }
+
+    const btnText = submitBtn.querySelector('.feedback-btn-text');
+    const formInputs = [
+        document.getElementById('name'),
+        document.getElementById('email'),
+        document.getElementById('message')
+    ].filter(Boolean);
+
+    const setContactButtonState = (state) => {
+        submitBtn.classList.remove('is-loading', 'is-success', 'is-error');
+        submitBtn.removeAttribute('aria-busy');
+
+        if (state === 'loading') {
+            submitBtn.classList.add('is-loading');
+            submitBtn.setAttribute('aria-busy', 'true');
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            return;
+        }
+
+        if (state === 'success') {
+            submitBtn.classList.add('is-success');
+            submitBtn.disabled = true;
+            btnText.textContent = 'Message Sent!';
+            return;
+        }
+
+        if (state === 'error') {
+            submitBtn.classList.add('is-error');
+            submitBtn.disabled = false;
+            btnText.textContent = 'Try Again';
+            return;
+        }
+
+        submitBtn.disabled = false;
+        btnText.textContent = 'Send Message';
+    };
+
+    const wait = (ms) => new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+    });
+
+    const resetOnEdit = () => {
+        if (submitBtn.classList.contains('is-success') || submitBtn.classList.contains('is-error')) {
+            setContactButtonState('idle');
+        }
+    };
+
+    formInputs.forEach((inputEl) => {
+        inputEl.addEventListener('input', resetOnEdit);
+    });
     
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -390,21 +389,20 @@ function setupContactForm() {
         
         // Validate
         if (!name || !email || !message) {
+            setContactButtonState('error');
             alert('Please fill out all fields');
             return;
         }
 
         // Check EmailJS config before attempting to send
         if (!emailjsConfigValid()) {
+            setContactButtonState('error');
             alert('EmailJS is not configured. Please open script-vanilla.js and set EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, and EMAILJS_TEMPLATE_ID.');
             return;
         }
 
-        // Disable button during submission
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Sending...</span>';
+        setContactButtonState('loading');
+        await wait(760);
 
         try {
             // Use EmailJS to send the message (vanilla JS)
@@ -429,72 +427,180 @@ function setupContactForm() {
             // Send via EmailJS
             await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
-            // Show success message
-            showSuccessModal();
+            setContactButtonState('success');
             contactForm.reset();
 
         } catch (error) {
             console.error('Email send error (detailed):', error);
             const msg = extractErrorMessage(error);
+            setContactButtonState('error');
             alert(`❌ Error: ${msg}`);
-        } finally {
-            // Re-enable button
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
         }
     });
 }
 
 /* ================================ */
-/* Footer Feedback                 */
+/* Portfolio Feedback               */
 /* ================================ */
 
 function setupPortfolioFeedback() {
     const feedbackForm = document.getElementById('feedbackForm');
     const feedbackStatus = document.getElementById('feedbackStatus');
+    const submitBtn = document.getElementById('feedbackSubmitBtn');
 
-    if (!feedbackForm || !feedbackStatus) return;
+    if (!feedbackForm || !feedbackStatus || !submitBtn) return;
 
-    feedbackForm.addEventListener('submit', (e) => {
+    const btnText = submitBtn.querySelector('.feedback-btn-text');
+    const feedbackMessageEl = document.getElementById('feedbackMessage');
+    const ratingInputs = feedbackForm.querySelectorAll('input[name="star-radio"]');
+
+    const getSupabaseClient = () => {
+        if (!window.supabase) {
+            console.error('[Feedback] Supabase SDK is not loaded. Check script tag in index.html.');
+            return null;
+        }
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+            console.error('[Feedback] Missing SUPABASE_URL or SUPABASE_ANON_KEY.');
+            return null;
+        }
+        if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
+            console.error('[Feedback] Supabase credentials are placeholders.');
+            return null;
+        }
+        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    };
+
+    const setFeedbackButtonState = (state) => {
+        submitBtn.classList.remove('is-loading', 'is-success', 'is-error');
+        submitBtn.removeAttribute('aria-busy');
+
+        if (state === 'loading') {
+            submitBtn.classList.add('is-loading');
+            submitBtn.setAttribute('aria-busy', 'true');
+            submitBtn.disabled = true;
+            btnText.textContent = 'Submitting...';
+            return;
+        }
+
+        if (state === 'success') {
+            submitBtn.classList.add('is-success');
+            submitBtn.disabled = true;
+            btnText.textContent = 'Thanks for your feedback!';
+            return;
+        }
+
+        if (state === 'error') {
+            submitBtn.classList.add('is-error');
+            submitBtn.disabled = false;
+            btnText.textContent = 'Try Again';
+            return;
+        }
+
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Feedback';
+    };
+
+    const wait = (ms) => new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+    });
+
+    feedbackForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const selectedRating = feedbackForm.querySelector('input[name="star-radio"]:checked');
-        const feedbackMessageEl = document.getElementById('feedbackMessage');
         const feedbackMessage = feedbackMessageEl ? feedbackMessageEl.value.trim() : '';
+        const supabaseClient = getSupabaseClient();
 
         feedbackStatus.classList.remove('is-success', 'is-error');
 
         if (!selectedRating) {
-            feedbackStatus.textContent = 'Please choose a star rating first.';
+            setFeedbackButtonState('idle');
+            feedbackStatus.textContent = 'Please select a star rating.';
             feedbackStatus.classList.add('is-error');
             return;
         }
 
         if (!feedbackMessage) {
-            feedbackStatus.textContent = 'Please write a short feedback message.';
+            setFeedbackButtonState('idle');
+            feedbackStatus.textContent = 'Please add your feedback message.';
             feedbackStatus.classList.add('is-error');
             return;
         }
 
-        const feedbackPayload = {
-            rating: Number(selectedRating.value),
-            message: feedbackMessage,
-            createdAt: new Date().toISOString()
-        };
+        // Trigger modern SaaS-style button morph and progress fill.
+        setFeedbackButtonState('loading');
+        await wait(760);
 
         try {
-            const existing = JSON.parse(localStorage.getItem('portfolioFeedback') || '[]');
-            existing.push(feedbackPayload);
-            localStorage.setItem('portfolioFeedback', JSON.stringify(existing));
+            if (!supabaseClient) {
+                throw new Error('Supabase not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.');
+            }
 
-            feedbackStatus.textContent = 'Thank you. Your rating and feedback were submitted.';
-            feedbackStatus.classList.add('is-success');
-            feedbackForm.reset();
+            console.groupCollapsed('[Feedback] Insert attempt');
+            console.log('Supabase URL:', SUPABASE_URL);
+            console.log('Table:', FEEDBACK_TABLE);
+            console.log('Payload:', {
+                rating: Number(selectedRating.value),
+                message: feedbackMessage
+            });
+
+            const { error } = await supabaseClient
+                .from(FEEDBACK_TABLE)
+                .insert([{ rating: Number(selectedRating.value), message: feedbackMessage }]);
+
+            if (error) {
+                console.error('[Feedback] Supabase insert error:', {
+                    message: error.message,
+                    code: error.code,
+                    details: error.details,
+                    hint: error.hint
+                });
+
+                if (error.code === '42501') {
+                    console.error('[Feedback] RLS policy likely blocks INSERT for anon role. Add an INSERT policy for table Feedback.');
+                }
+
+                if (error.code === '42P01') {
+                    console.error('[Feedback] Table not found. Confirm exact table name and case. Current table target: Feedback');
+                }
+
+                console.groupEnd();
+                throw error;
+            }
+
+            console.log('[Feedback] Insert successful');
+            console.groupEnd();
+
+            setFeedbackButtonState('success');
+            feedbackStatus.textContent = '';
+            feedbackStatus.classList.remove('is-success');
         } catch (error) {
-            console.error('Feedback storage error:', error);
-            feedbackStatus.textContent = 'Unable to submit feedback right now. Please try again.';
+            console.error('Feedback submission error:', error);
+            setFeedbackButtonState('error');
+            feedbackStatus.textContent = 'Error submitting feedback';
             feedbackStatus.classList.add('is-error');
+
+            if (typeof console.groupEnd === 'function') {
+                try { console.groupEnd(); } catch (eGroup) { /* no-op */ }
+            }
         }
+    });
+
+    // Keep success state until user edits rating/message again.
+    const resetOnEdit = () => {
+        if (submitBtn.classList.contains('is-success') || submitBtn.classList.contains('is-error')) {
+            setFeedbackButtonState('idle');
+            feedbackStatus.textContent = '';
+            feedbackStatus.classList.remove('is-success', 'is-error');
+        }
+    };
+
+    if (feedbackMessageEl) {
+        feedbackMessageEl.addEventListener('input', resetOnEdit);
+    }
+
+    ratingInputs.forEach((input) => {
+        input.addEventListener('change', resetOnEdit);
     });
 }
 
@@ -754,47 +860,4 @@ function setupBackToTop() {
             behavior: 'smooth'
         });
     });
-}
-
-/* ================================ */
-/* Success Modal                   */
-/* ================================ */
-
-function setupModal() {
-    // Modal functionality is handled in showSuccessModal
-}
-
-function showSuccessModal() {
-    const modal = document.getElementById('successModal');
-    const okBtn = document.getElementById('modalOkBtn');
-
-    if (!modal || !okBtn) return;
-
-    document.body.classList.add('modal-open');
-    modal.classList.add('show');
-
-    const closeModal = () => {
-        modal.classList.remove('show');
-        document.body.classList.remove('modal-open');
-        document.removeEventListener('keydown', onKeyDown);
-    };
-
-    const onKeyDown = (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
-            closeModal();
-        }
-    };
-
-    // Close modal on OK button click
-    okBtn.onclick = closeModal;
-
-    // Close modal on overlay click
-    modal.onclick = (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    };
-
-    // Close modal on Escape key
-    document.addEventListener('keydown', onKeyDown);
 }
