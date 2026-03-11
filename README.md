@@ -59,9 +59,6 @@ Portfolio
   <img src="portfolio-preview.png" width="800">
 </p>
 
-Example:
-
-![Portfolio Screenshot](preview.png)
 
 ---
 
