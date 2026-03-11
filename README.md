@@ -55,7 +55,9 @@ Portfolio
 
 ## 📸 Preview
 
-*(Add a screenshot of your portfolio here)*
+<p align="center">
+  <img src="portfolio-preview.png" width="800">
+</p>
 
 Example:
 
