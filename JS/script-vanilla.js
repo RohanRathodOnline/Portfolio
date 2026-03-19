@@ -26,8 +26,8 @@ const skills = [
 // - `EMAILJS_SERVICE_ID`: The service ID you created in EmailJS (e.g. 'service_xxx').
 // - `EMAILJS_TEMPLATE_ID`: The template ID you created in EmailJS (e.g. 'template_xxx').
 // Prefer injecting these from a deployment-time script to avoid committing live values.
-const EMAILJS_PUBLIC_KEY = window.__EMAILJS_PUBLIC_KEY || 'LJ_XX89TpHf54s_P8';
-const EMAILJS_SERVICE_ID = window.__EMAILJS_SERVICE_ID || 'service_js5crgd';
+const EMAILJS_PUBLIC_KEY = window.__EMAILJS_PUBLIC_KEY || 'rwJBUq6XjSE1B97c-';
+const EMAILJS_SERVICE_ID = window.__EMAILJS_SERVICE_ID || 'service_dcj3zr4';
 const EMAILJS_TEMPLATE_ID = window.__EMAILJS_TEMPLATE_ID || 'template_6dz33cc';
 
 let _emailjsLoaded = false;
