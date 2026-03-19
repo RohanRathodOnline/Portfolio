@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rathod Rohan Rajaram - Portfolio</title>
+    <meta property="og:title" content="Rohan Rathod — Aspiring Software Developer"/>
+    <meta property="og:description" content="Portfolio of Rohan Rathod — BCA student building projects in C++, JavaScript, and Web Dev."/>
+    <meta property="og:image" content="https://rohanrathodonline.github.io/Portfolio/ASSETS/Profile.webp"/>
+    <meta property="og:url" content="https://rohanrathodonline.github.io/Portfolio/"/>
+    <meta property="og:type" content="website"/>
+    <meta name="twitter:card" content="summary_large_image"/>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="CSS/styles-vanilla.css">
 </head>
@@ -40,7 +46,7 @@
         
         <div class="hero-content hero-layout">
             <!-- Profile photo on left -->
-            <div class="hero-profile">
+            <div class="hero-profile hero-photo">
                 <img src="ASSETS/Profile.webp" alt="Profile photo" class="hero-profile-img">
             </div>
             
@@ -50,17 +56,26 @@
                     WELCOME - GLAD YOU'RE HERE...
                 </p>
                 
-                <h1 class="hero-title fade-in-up" style="animation-delay: 0.4s">
+                <h1 class="hero-title hero-name">
                     Rathod Rohan Rajaram
                 </h1>
                 
-                <p class="hero-subtitle fade-in-up" style="animation-delay: 0.6s">
-                    BCA Student | Learning C++, Web Development & Core CS Fundamentals
+                <p class="hero-subtitle hero-tagline">
+                    I'm a Computer Applications student who enjoys learning by building and understanding how things work behind the scenes.
                 </p>
                 
-                <p class="hero-description fade-in-up" style="animation-delay: 0.8s">
-                    Focused on building strong programming foundations through coursework and personal projects, with a growing interest in real-world software development.
+                <p class="hero-description hero-desc">
+                    I like solving problems, writing clean code, and creating solutions that are simple and useful. Right now, I'm focused on building a strong foundation in programming and improving my skills through hands-on projects and real learning.
                 </p>
+
+                <div class="hero-cta">
+                    <a href="ASSETS/Rohan_Rathod_Resume.pdf" download class="btn-hero-primary">
+                        ↓ Download Resume
+                    </a>
+                    <a href="#projects" class="btn-hero-secondary">
+                        View Projects →
+                    </a>
+                </div>
             </div>
         </div>
         
@@ -88,25 +103,34 @@
                 Learning by <span>Building</span>
             </h3>
             
-            <div class="about-card fade-in">
+            <div class="about-card about-content reveal">
                 <p>
                     Hi, I'm <span class="highlight">Rohan Rathod</span>, a second-year BCA student at <span class="highlight">JSPM's Rajarshi Shahu College of Engineering</span>, Pune.
-                    I focus on building a strong foundation in C++, Object-Oriented Programming, and Web Fundamentals, and I enjoy turning concepts into working solutions through hands-on projects.
+                </p>
+
+                <p>
+                    I like building things and learning by actually doing. Most of my learning comes from working on projects, trying ideas, making mistakes, and improving step by step.
+                </p>
+
+                <p>
+                    I've worked with C++, Java, Python, and web technologies like HTML, CSS, and JavaScript. I've built projects like a Chrome extension, a web scraper dashboard, and even a Sudoku solver using OpenCV.
                 </p>
                 
                 <h4 class="about-subtitle">What I work with:</h4>
-                <ul class="about-list">
-                    <li>C &amp; C++ (OOP, file handling, basic data structures)</li>
-                    <li>HTML, CSS, JavaScript (responsive UI basics)</li>
-                    <li>Database concepts and SQL fundamentals</li>
-                </ul>
+                <div class="about-tags">
+                    <span class="about-tag">C / C++</span>
+                    <span class="about-tag">Java</span>
+                    <span class="about-tag">Python</span>
+                    <span class="about-tag">HTML</span>
+                    <span class="about-tag">CSS</span>
+                    <span class="about-tag">JavaScript</span>
+                    <span class="about-tag">SQL</span>
+                    <span class="about-tag">OOP</span>
+                    <span class="about-tag">Git &amp; GitHub</span>
+                </div>
                 
                 <p>
-                    I believe in learning by building — experimenting with small projects, improving code quality, and understanding how systems work under the hood.
-                </p>
-                
-                <p>
-                    Currently preparing for internships and entry-level software roles where I can learn, contribute, and grow as a developer.
+                    Right now, I'm looking for internship or entry-level opportunities where I can learn more, work on real projects, and grow as a developer.
                 </p>
             </div>
         </div>
@@ -126,9 +150,217 @@
                 Technologies I'm actively <span>Learning & Using</span>
             </h3>
             
-            <div class="skills-grid" id="skillsGrid">
-                <!-- Skills will be populated by JavaScript -->
+            <div class="skills-grid reveal">
+                <article class="project-card skill-category-card reveal">
+                    <h4 class="skill-category-title">💻 Languages</h4>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">C</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">C++</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Java</span>
+                            <span class="skill-percent">69%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="69"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card skill-category-card reveal">
+                    <h4 class="skill-category-title">🌐 Web Development</h4>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">HTML5</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="85"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">CSS3</span>
+                            <span class="skill-percent">80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="80"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">JavaScript</span>
+                            <span class="skill-percent">65%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="65"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card skill-category-card reveal">
+                    <h4 class="skill-category-title">🗄️ Database & Concepts</h4>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">SQL</span>
+                            <span class="skill-percent">60%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="60"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">OOP</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">DSA Basics</span>
+                            <span class="skill-percent">55%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="55"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card skill-category-card reveal">
+                    <h4 class="skill-category-title">🛠️ Tools & DevOps</h4>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Git & GitHub</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Docker</span>
+                            <span class="skill-percent">40%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="40"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">VS Code</span>
+                            <span class="skill-percent">90%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="90"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Visual Studio</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Cursor (AI Editor)</span>
+                            <span class="skill-percent">75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Supabase</span>
+                            <span class="skill-percent">60%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="60"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Render</span>
+                            <span class="skill-percent">60%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="60"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Vercel</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="70"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Lovable</span>
+                            <span class="skill-percent">55%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="55"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Figma</span>
+                            <span class="skill-percent">65%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="65"></div>
+                        </div>
+                    </div>
+                </article>
             </div>
+
+            <p class="skills-note fade-in">
+                Skill levels indicate current proficiency and ongoing growth.
+            </p>
         </div>
     </section>
 
@@ -143,39 +375,150 @@
             </div>
             
             <h3 class="section-title fade-in">
-                What I've <span>built</span>
+                What I've Built
             </h3>
+            <p class="projects-subtitle fade-in">A collection of things I've built while learning</p>
             
-            <div class="projects-grid">
-                <div class="project-card fade-in">
-                    <div class="project-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.5 4h15a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 011 14.5v-9A1.5 1.5 0 012.5 4zm0 0L10 9l7.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        </svg>
+            <div class="projects-grid fade-in">
+                <article class="project-card reveal" aria-label="Number Guessing Game C++ project card">
+                    <a class="project-thumb terminal-thumb" href="https://github.com/RohanRathodOnline/GuessingGame" target="_blank" rel="noopener noreferrer" aria-label="Open Number Guessing Game repository">
+                        <div class="terminal-window" aria-hidden="true">
+                            <div class="terminal-header">
+                                <span class="terminal-dot dot-red"></span>
+                                <span class="terminal-dot dot-yellow"></span>
+                                <span class="terminal-dot dot-green"></span>
+                            </div>
+                            <div class="terminal-body">
+                                <p>Guess the number (1-100)</p>
+                                <p>&gt; 45 Too High</p>
+                                <p>&gt; 23 Too Low</p>
+                                <p>&gt; 31 Correct!</p>
+                            </div>
+                        </div>
+                    </a>
+                    <h4 class="project-title">Number Guessing Game (C++)</h4>
+                    <p class="project-desc">Console-based C++ game where players guess a random number with hint feedback and round-wise attempt tracking.</p>
+                    <div class="tech-badges" aria-label="Number Guessing Game tech stack">
+                        <span class="tech-badge">C++</span>
+                        <span class="tech-badge">OOP</span>
+                        <span class="tech-badge">Standard Library</span>
                     </div>
-                    <h4>Personal Portfolio Website</h4>
-                    <p>A responsive portfolio website built with vanilla HTML, CSS, and JavaScript. Features dark/light theme toggle, smooth animations, back-to-top button, and contact form integration.</p>
-                </div>
-                
-                <div class="project-card fade-in" style="animation-delay: 0.1s">
-                    <div class="project-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.5 1.5H5a3.5 3.5 0 00-3.5 3.5v10a3.5 3.5 0 003.5 3.5h10a3.5 3.5 0 003.5-3.5V9.5m-9-8v8m-1-1l1-1 1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        </svg>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/GuessingGame" target="_blank" rel="noopener noreferrer">View Code ↗</a>
                     </div>
-                    <h4>Will Be Added As I Build</h4>
-                    <p>This space will showcase my best work as I grow.</p>
-                </div>
-                
-                <div class="project-card fade-in" style="animation-delay: 0.2s">
-                    <div class="project-icon">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.5 1.5H5a3.5 3.5 0 00-3.5 3.5v10a3.5 3.5 0 003.5 3.5h10a3.5 3.5 0 003.5-3.5V9.5m-9-8v8m-1-1l1-1 1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        </svg>
+                </article>
+
+                <article class="project-card reveal" aria-label="Smart Web Scraper Chrome Extension project card">
+                    <a class="project-thumb" href="https://github.com/RohanRathodOnline/Smart-Web-Scraper-Chrome-Extension" target="_blank" rel="noopener noreferrer" aria-label="Open Smart Web Scraper repository">
+                        <img src="ASSETS/Extension.png" alt="Smart Web Scraper project thumbnail" loading="lazy" decoding="async">
+                    </a>
+                    <h4 class="project-title">Smart Web Scraper - Chrome Extension</h4>
+                    <p class="project-desc">Chrome extension that extracts title, price, and rating from e-commerce pages and exports clean CSV output.</p>
+                    <div class="tech-badges" aria-label="Smart Web Scraper tech stack">
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">Chrome API</span>
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
                     </div>
-                    <h4>Open to Collaboration</h4>
-                    <p>Interested in building something together? Reach out!</p>
-                </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/Smart-Web-Scraper-Chrome-Extension" target="_blank" rel="noopener noreferrer">View Code ↗</a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" aria-label="Web Scraper Dashboard project card">
+                    <a class="project-thumb webscraper-thumb" href="https://rohanrathodonline.github.io/Web-Scraper/" target="_blank" rel="noopener noreferrer" aria-label="Open Web Scraper Dashboard live demo">
+                        <img src="ASSETS/Dashboard1.png" alt="Web Scraper Dashboard thumbnail 1" loading="lazy" decoding="async">
+                        <img src="ASSETS/Dashboard2.png" alt="Web Scraper Dashboard thumbnail 2" loading="lazy" decoding="async">
+                        <img src="ASSETS/Dashboard3.png" alt="Web Scraper Dashboard thumbnail 3" loading="lazy" decoding="async">
+                        <img src="ASSETS/Dashboard4.png" alt="Web Scraper Dashboard thumbnail 4" loading="lazy" decoding="async">
+                    </a>
+                    <h4 class="project-title">Web Scraper Dashboard</h4>
+                    <p class="project-desc">Interactive dashboard that scrapes and visualizes structured web data with dynamic rendering and filtering.</p>
+                    <div class="tech-badges" aria-label="Web Scraper Dashboard tech stack">
+                        <span class="tech-badge">Python (Flask)</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">HTML</span>
+                        <span class="tech-badge">CSS</span>
+                        <span class="tech-badge">Web Scraping</span>
+                    </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/Web-Scraper" target="_blank" rel="noopener noreferrer">View Code ↗</a>
+                        <a class="btn-demo" href="https://rohanrathodonline.github.io/Web-Scraper/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" aria-label="Sudoku Game project card">
+                    <a class="project-thumb sudoku-thumb" href="https://rohanrathodonline.github.io/Sudoku/" target="_blank" rel="noopener noreferrer" aria-label="Open Sudoku Game live demo">
+                        <img src="ASSETS/Sudoku1.png" alt="Sudoku Game thumbnail 1" loading="lazy" decoding="async">
+                        <img src="ASSETS/Sudoku2.png" alt="Sudoku Game thumbnail 2" loading="lazy" decoding="async">
+                    </a>
+                    <h4 class="project-title">Sudoku Game</h4>
+                    <p class="project-desc">Interactive Sudoku with puzzle generation, real-time validation, difficulty modes, hints, and timer support.</p>
+                    <div class="tech-badges" aria-label="Sudoku tech stack">
+                        <span class="tech-badge">C++</span>
+                        <span class="tech-badge">JavaScript</span>
+                        <span class="tech-badge">OpenCV</span>
+                        <span class="tech-badge">CMake</span>
+                        <span class="tech-badge">Docker</span>
+                    </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/Sudoku" target="_blank" rel="noopener noreferrer">View Code ↗</a>
+                        <a class="btn-demo" href="https://rohanrathodonline.github.io/Sudoku/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" aria-label="Personal Portfolio Website project card">
+                    <a class="project-thumb" href="https://rohanrathodonline.github.io/Portfolio/" target="_blank" rel="noopener noreferrer" aria-label="Open Portfolio Website live demo">
+                        <img src="ASSETS/Portfolio.png" alt="Personal Portfolio project thumbnail" loading="lazy" decoding="async">
+                    </a>
+                    <h4 class="project-title">Personal Portfolio Website</h4>
+                    <p class="project-desc">Responsive personal portfolio with theme switching, reveal animations, and integrated contact workflow.</p>
+                    <div class="tech-badges" aria-label="Portfolio tech stack">
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                    </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/Portfolio" target="_blank" rel="noopener noreferrer">View Code ↗</a>
+                        <a class="btn-demo" href="https://rohanrathodonline.github.io/Portfolio/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" aria-label="Temperature Converter project card">
+                    <a class="project-thumb" href="https://rohanrathodonline.github.io/Temperature-Converter/" target="_blank" rel="noopener noreferrer" aria-label="Open Temperature Converter live demo">
+                        <img src="ASSETS/Temprature.png" alt="Temperature Converter project thumbnail" loading="lazy" decoding="async">
+                    </a>
+                    <h4 class="project-title">Temperature Converter</h4>
+                    <p class="project-desc">Lightweight converter app that transforms Celsius, Fahrenheit, and Kelvin values instantly with a clean UI.</p>
+                    <div class="tech-badges" aria-label="Temperature Converter tech stack">
+                        <span class="tech-badge">HTML5</span>
+                        <span class="tech-badge">CSS3</span>
+                        <span class="tech-badge">JavaScript</span>
+                    </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline/Temperature-Converter" target="_blank" rel="noopener noreferrer">View Code ↗</a>
+                        <a class="btn-demo" href="https://rohanrathodonline.github.io/Temperature-Converter/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal" aria-label="Coming Soon project card">
+                    <a class="project-thumb comingsoon-thumb" href="https://github.com/RohanRathodOnline" target="_blank" rel="noopener noreferrer" aria-label="Open GitHub profile">
+                        <div class="comingsoon-shell" aria-hidden="true">
+                            <div class="comingsoon-dot"></div>
+                            <p class="comingsoon-title">NEXT BUILD IN PROGRESS</p>
+                            <p class="comingsoon-sub">Shipping soon...</p>
+                        </div>
+                    </a>
+                    <h4 class="project-title">Coming Soon</h4>
+                    <p class="project-desc">Next project is in progress. More builds are on the way, follow my GitHub for the latest updates.</p>
+                    <div class="tech-badges" aria-label="Coming Soon stack">
+                        <span class="tech-badge">In Progress</span>
+                        <span class="tech-badge">R&amp;D</span>
+                    </div>
+                    <div class="project-buttons">
+                        <a class="btn-code" href="https://github.com/RohanRathodOnline" target="_blank" rel="noopener noreferrer">View Update ↗</a>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -197,12 +540,12 @@
             <!-- SYBCA Card -->
             <div class="education-card fade-in">
                 <div class="timeline-marker"></div>
-                <div class="education-content">
-                    <span class="education-badge">Currently Pursuing</span>
+                <div class="education-content reveal">
+                    <span class="education-currently-tag">Currently Pursuing</span>
                     <h4>SYBCA (Second Year BCA)</h4>
                     <p class="education-degree">Bachelor of Computer Applications</p>
                     <p class="education-college">JSPM's Rajarshi Shahu College of Engineering (RSCOE)</p>
-                    <p class="education-location">Tathawade, Pune</p>
+                    <p class="education-location">Tathawade, Pune · Expected Graduation: 2026</p>
                 </div>
             </div>
 
@@ -216,7 +559,7 @@
                 <!-- 12th Education Card -->
                 <div class="education-card fade-in" style="animation-delay: 0.1s">
                     <div class="timeline-marker"></div>
-                    <div class="education-content">
+                    <div class="education-content reveal">
                         <span class="education-badge">2019 – 2021</span>
                         <h4>Higher Secondary Education (12th)</h4>
                         <p class="education-degree">Sant Bhagwan Baba Middle and Higher Secondary School</p>
@@ -231,22 +574,6 @@
                     </div>
                 </div>
 
-                <!-- 10th Education Card -->
-                <div class="education-card fade-in" style="animation-delay: 0.2s">
-                    <div class="timeline-marker"></div>
-                    <div class="education-content">
-                        <span class="education-badge">2014 – 2019</span>
-                        <h4>Secondary School (10th)</h4>
-                        <p class="education-degree">SANT NAMADEV MADHYMIK UCHA MADHYMIK ARVI ROAD</p>
-                        <p class="education-college">Ambejogai Road, Latur, Maharashtra</p>
-                        <p class="education-location">State Board</p>
-                        <div class="education-details">
-                            <ul class="education-detail-list">
-                                <li>Strong foundation in mathematics and logical reasoning</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -289,91 +616,80 @@
                     </button>
                 </form>
 
-                <section class="feedback-panel fade-in" aria-labelledby="feedbackTitle">
-                    <h4 id="feedbackTitle" class="feedback-panel-title">Rate My Portfolio</h4>
-                    <p class="feedback-panel-subtitle">Share your genuine rating and feedback.</p>
-
-                    <form id="feedbackForm" class="feedback-form">
-                        <fieldset class="rating-fieldset">
-                            <legend class="sr-only">Choose your rating</legend>
-
-                            <div class="rating" role="radiogroup" aria-label="Portfolio rating">
-                                <input type="radio" id="star-5" name="star-radio" value="5">
-                                <label for="star-5" title="5 stars" aria-label="5 stars">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-                                </label>
-
-                                <input type="radio" id="star-4" name="star-radio" value="4">
-                                <label for="star-4" title="4 stars" aria-label="4 stars">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-                                </label>
-
-                                <input type="radio" id="star-3" name="star-radio" value="3">
-                                <label for="star-3" title="3 stars" aria-label="3 stars">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-                                </label>
-
-                                <input type="radio" id="star-2" name="star-radio" value="2">
-                                <label for="star-2" title="2 stars" aria-label="2 stars">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-                                </label>
-
-                                <input type="radio" id="star-1" name="star-radio" value="1">
-                                <label for="star-1" title="1 star" aria-label="1 star">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
-                                </label>
-                            </div>
-                        </fieldset>
-
-                        <div class="form-group">
-                            <label for="feedbackMessage">Feedback</label>
-                            <textarea id="feedbackMessage" name="feedbackMessage" rows="4" placeholder="Tell me what looks good and what I should improve..." required></textarea>
-                        </div>
-
-                        <button type="submit" class="contact-button feedback-submit-btn" id="feedbackSubmitBtn" aria-live="polite">
-                            <span class="feedback-btn-content">
-                                <svg class="feedback-check-icon" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path class="feedback-check-path" d="M4.5 10.5L8.5 14.5L15.5 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span class="feedback-btn-text">Submit Feedback</span>
-                            </span>
-                        </button>
-                        <p id="feedbackStatus" class="feedback-status" aria-live="polite"></p>
-                    </form>
-                </section>
-            </div>
-
-            <div class="contact-info fade-in contact-info-bottom">
-                    <p>
-                        Feel free to reach out for collaborations, project ideas, or just to say hi! I'm always open to connecting with fellow developers and tech enthusiasts.
+                <div class="contact-right-col reveal">
+                    <h4 class="contact-right-heading">Let's connect</h4>
+                    <p class="contact-right-desc">
+                        Feel free to reach out for collaborations, 
+                        project ideas, or just to say hi! I'm always 
+                        open to connecting with fellow developers and 
+                        tech enthusiasts.
                     </p>
-                    <div class="social-links">
-                        <a href="https://github.com/RohanRathodOnline" class="social-icon social-github" aria-label="GitHub" data-label="GitHub" target="_blank" rel="noopener noreferrer">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 0C4.48 0 0 4.48 0 10c0 4.41 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.71-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.82.09-.64.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.92 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33s1.7.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85 0 1.34-.01 2.42-.01 2.75 0 .26.18.58.69.48C17.14 18.16 20 14.41 20 10c0-5.52-4.48-10-10-10z"/>
+
+                    <div class="contact-detail-row">
+                        <span>📧</span>
+                        <span>rrrathod_bca@jspmrscoe.edu.in</span>
+                    </div>
+                    <div class="contact-detail-row">
+                        <span>📍</span>
+                        <span>Pune, Maharashtra, India</span>
+                    </div>
+                    <div class="contact-detail-row">
+                        <span>💼</span>
+                        <span>Open to internships &amp; entry-level roles</span>
+                    </div>
+
+                    <div class="social-links" style="margin-top: 1.5rem; justify-content: flex-start;">
+                        <a href="https://github.com/RohanRathodOnline"
+                           class="social-icon social-github"
+                           data-label="GitHub"
+                           aria-label="GitHub"
+                           target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 
+                                11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235
+                                -3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23
+                                -1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 
+                                1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765
+                                -1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 
+                                1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23
+                                .96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3
+                                -1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 
+                                1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095
+                                .81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57
+                                A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                             </svg>
                         </a>
-                        <a href="https://www.linkedin.com/in/rohanrathodofficial/" class="social-icon social-linkedin" aria-label="LinkedIn" data-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 0H1C.4 0 0 .4 0 1v18c0 .6.4 1 1 1h18c.6 0 1-.4 1-1V1c0-.6-.4-1-1-1zM5.9 17H2.9V7.5h3V17zM4.4 6.1c-1 0-1.8-.8-1.8-1.8s.8-1.8 1.8-1.8 1.8.8 1.8 1.8-.8 1.8-1.8 1.8zM17.1 17h-3V11.9c0-1.2-.4-2-1.5-2-1.2 0-1.8.8-2 1.6-.1.2-.1.5-.1.7V17h-3V7.5h3v1.3c.4-.7 1.3-1.6 3.1-1.6 2.3 0 4 1.5 4 4.8V17z"/>
+                        <a href="https://www.linkedin.com/in/rohanrathodofficial/"
+                           class="social-icon social-linkedin"
+                           data-label="LinkedIn"
+                           aria-label="LinkedIn"
+                           target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037
+                                -1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9
+                                h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 
+                                4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 
+                                1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019
+                                H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729
+                                v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 
+                                24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                             </svg>
                         </a>
-                        <a href="mailto:rohanrathod3946@gmail.com" class="social-icon social-email" aria-label="Email" data-label="Email">
-                            <img class="email-icon-png" src="ASSETS/mail.png" alt="Email" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <svg class="email-svg-fallback" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2.5 4h15a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 011 14.5v-9A1.5 1.5 0 012.5 4zm0 0L10 9l7.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
-                        <a href="https://www.instagram.com/rohanrathod_07/" class="social-icon social-instagram" aria-label="Instagram" data-label="Instagram" target="_blank" rel="noopener noreferrer">
-                            <img class="instagram-icon-png" src="ASSETS/instagram.png" alt="Instagram" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                            <svg class="instagram-svg-fallback" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2.8" y="2.8" width="14.4" height="14.4" rx="4.4" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="10" cy="10" r="3.2" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="14.6" cy="5.6" r="1" fill="currentColor"/>
+                        <a href="mailto:rrrathod_bca@jspmrscoe.edu.in"
+                           class="social-icon social-email"
+                           data-label="Email"
+                           aria-label="Email">
+                            <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+                                <path d="M3 6h18a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 
+                                0 1-2-2V8a2 2 0 0 1 2-2zm0 0l9 6 9-6" 
+                                stroke="currentColor" stroke-width="1.7" 
+                                stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
                     </div>
                 </div>
+
+            </div>
         </div>
     </section>
 
@@ -391,6 +707,13 @@
     <!-- Theme toggle button (light / dark) -->
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
 
+    <div id="theme-tutorial" class="theme-tutorial-popup" role="dialog" aria-modal="false" aria-live="polite" aria-label="Theme tutorial" hidden>
+        <button id="theme-tutorial-close" class="theme-tutorial-close" type="button" aria-label="Close tutorial">×</button>
+        <p class="theme-tutorial-title">Theme Switcher</p>
+        <p class="theme-tutorial-text">Use this button to switch between dark mode and light mode anytime.</p>
+        <button id="theme-tutorial-gotit" class="theme-tutorial-gotit" type="button">Got it</button>
+    </div>
+
     <!-- Back to top button -->
     <button id="back-to-top" class="back-to-top" aria-label="Back to top" title="Back to top">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -400,7 +723,6 @@
 
     <div class="custom-cursor" aria-hidden="true"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="JS/script-vanilla.js"></script>
 </body>
 </html>

@@ -25,14 +25,10 @@ const skills = [
 // - `EMAILJS_PUBLIC_KEY`: Your EmailJS public (user) key (starts with 'user_' or similar).
 // - `EMAILJS_SERVICE_ID`: The service ID you created in EmailJS (e.g. 'service_xxx').
 // - `EMAILJS_TEMPLATE_ID`: The template ID you created in EmailJS (e.g. 'template_xxx').
-// You can set these strings directly here or replace them at build time.
-const EMAILJS_PUBLIC_KEY = 'LJ_XX89TpHf54s_P8';
-const EMAILJS_SERVICE_ID = 'service_js5crgd';
-const EMAILJS_TEMPLATE_ID = 'template_hvbzxjy';
-
-const SUPABASE_URL = 'https://szawrjbnkbvjtouwvtsk.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6YXdyamJua2J2anRvdXd2dHNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NTg2NjQsImV4cCI6MjA4ODUzNDY2NH0.PYqg4Ex4oYknb4ZLJMHLBo74JlKCYrQ_sQuO4s3Yd4U';
-const FEEDBACK_TABLE = 'Feedback';
+// Prefer injecting these from a deployment-time script to avoid committing live values.
+const EMAILJS_PUBLIC_KEY = window.__EMAILJS_PUBLIC_KEY || 'LJ_XX89TpHf54s_P8';
+const EMAILJS_SERVICE_ID = window.__EMAILJS_SERVICE_ID || 'service_js5crgd';
+const EMAILJS_TEMPLATE_ID = window.__EMAILJS_TEMPLATE_ID || 'template_6dz33cc';
 
 let _emailjsLoaded = false;
 function loadEmailJSSDK() {
@@ -79,16 +75,18 @@ function extractErrorMessage(err) {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setupCustomCursor();
-    populateSkills();
     setupNavbar();
+    setupHeroScrollHint();
     setupProfileToLogoTransition();
     setupMobileMenu();
     setupContactForm();
     setupIntersectionObserver();
+    setupMobileProjectThumbnailPreview();
+    setupSkillsProgressObserver();
+    setupDarkModeBackgroundMotion();
     setCurrentYear();
     setupThemeToggle();
     setupEducationDetailsToggle();
-    setupPortfolioFeedback();
 });
  
  /* ================================ */
@@ -121,14 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setupNavbar() {
     const navbar = document.getElementById('navbar');
-    
-    window.addEventListener('scroll', () => {
+
+    const updateNavbarState = () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
-    });
+    };
+    
+    window.addEventListener('scroll', updateNavbarState, { passive: true });
+    updateNavbarState();
 
     // Smooth scroll for nav links
     document.querySelectorAll('.nav-link').forEach(link => {
@@ -146,6 +147,22 @@ function setupNavbar() {
     });
 }
 
+function setupHeroScrollHint() {
+    const heroScrollHint = document.querySelector('.hero-scroll');
+    if (!heroScrollHint) return;
+
+    const toggleHintVisibility = () => {
+        if (window.scrollY > 20) {
+            heroScrollHint.classList.add('is-hidden');
+        } else {
+            heroScrollHint.classList.remove('is-hidden');
+        }
+    };
+
+    window.addEventListener('scroll', toggleHintVisibility, { passive: true });
+    toggleHintVisibility();
+}
+
 function setupProfileToLogoTransition() {
     const heroProfile = document.querySelector('.hero-profile');
     const heroProfileImg = document.querySelector('.hero-profile-img');
@@ -153,135 +170,139 @@ function setupProfileToLogoTransition() {
 
     if (!heroProfile || !heroProfileImg || !navbarLogoImg) return;
 
+    heroProfile.classList.add('morph-stable');
+    heroProfile.classList.remove('morph-hidden');
+
     const originalLogoSrc = navbarLogoImg.getAttribute('src');
     const originalLogoAlt = navbarLogoImg.getAttribute('alt') || 'Roha logo';
     const profileSrc = heroProfileImg.getAttribute('src');
     const profileAlt = heroProfileImg.getAttribute('alt') || 'Profile photo';
 
-    navbarLogoImg.style.transition = 'opacity 0.25s ease, width 0.35s ease, height 0.35s ease, border-radius 0.35s ease';
-
     let isInLogoPosition = false;
     let isAnimating = false;
     let logoSwapTimeoutId = null;
-    const enterLogoScrollY = 150;
-    const exitLogoScrollY = 85;
 
-    const animateImageBetweenRects = (fromRect, toRect, imageSrc, imageAlt, onComplete) => {
+    const ENTER_SCROLL = 150;
+    const EXIT_SCROLL  = 85;
+
+    // Create a flying clone that animates between two rects
+    const flyClone = (fromRect, toRect, onDone) => {
         const clone = document.createElement('img');
-        clone.src = imageSrc;
-        clone.alt = imageAlt;
-        clone.style.position = 'fixed';
-        clone.style.left = `${fromRect.left}px`;
-        clone.style.top = `${fromRect.top}px`;
-        clone.style.width = `${fromRect.width}px`;
-        clone.style.height = `${fromRect.height}px`;
-        clone.style.borderRadius = '50%';
-        clone.style.objectFit = 'cover';
-        clone.style.margin = '0';
-        clone.style.pointerEvents = 'none';
-        clone.style.zIndex = '12000';
-        clone.style.boxShadow = '0 10px 24px rgba(2, 6, 23, 0.25)';
-        clone.style.opacity = '0.98';
-        clone.style.transition = 'left 0.72s cubic-bezier(0.22, 1, 0.36, 1), top 0.72s cubic-bezier(0.22, 1, 0.36, 1), width 0.72s cubic-bezier(0.22, 1, 0.36, 1), height 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease';
+        clone.src = profileSrc;
+        clone.alt = profileAlt;
+        Object.assign(clone.style, {
+            position:     'fixed',
+            left:         `${fromRect.left}px`,
+            top:          `${fromRect.top}px`,
+            width:        `${fromRect.width}px`,
+            height:       `${fromRect.height}px`,
+            borderRadius: '50%',
+            objectFit:    'cover',
+            pointerEvents:'none',
+            zIndex:       '12000',
+            margin:       '0',
+            padding:      '0',
+            transition:   'left 0.68s cubic-bezier(0.22,1,0.36,1),' +
+                          'top 0.68s cubic-bezier(0.22,1,0.36,1),' +
+                          'width 0.68s cubic-bezier(0.22,1,0.36,1),' +
+                          'height 0.68s cubic-bezier(0.22,1,0.36,1),' +
+                          'opacity 0.3s ease',
+            opacity:      '1',
+        });
         document.body.appendChild(clone);
 
+        // Force reflow before starting transition
+        clone.getBoundingClientRect();
+
         requestAnimationFrame(() => {
-            clone.style.left = `${toRect.left}px`;
-            clone.style.top = `${toRect.top}px`;
-            clone.style.width = `${toRect.width}px`;
+            clone.style.left   = `${toRect.left}px`;
+            clone.style.top    = `${toRect.top}px`;
+            clone.style.width  = `${toRect.width}px`;
             clone.style.height = `${toRect.height}px`;
         });
 
-        let finished = false;
-        const cleanup = () => {
-            if (finished) return;
-            finished = true;
+        let done = false;
+        const finish = () => {
+            if (done) return;
+            done = true;
             clone.remove();
-            if (typeof onComplete === 'function') onComplete();
+            if (typeof onDone === 'function') onDone();
         };
-
-        clone.addEventListener('transitionend', cleanup, { once: true });
-        window.setTimeout(cleanup, 900);
+        clone.addEventListener('transitionend', finish, { once: true });
+        setTimeout(finish, 800); // safety fallback
     };
 
-    const swapNavbarLogo = (src, alt, addProfileMode) => {
-        if (logoSwapTimeoutId) {
-            window.clearTimeout(logoSwapTimeoutId);
-            logoSwapTimeoutId = null;
-        }
-
+    // Swap the navbar logo src with a fade
+    const swapLogo = (src, alt, profileMode) => {
+        if (logoSwapTimeoutId) clearTimeout(logoSwapTimeoutId);
         navbarLogoImg.style.opacity = '0';
-
-        logoSwapTimeoutId = window.setTimeout(() => {
-            navbarLogoImg.setAttribute('src', src);
-            navbarLogoImg.setAttribute('alt', alt);
-            navbarLogoImg.classList.toggle('profile-photo-mode', addProfileMode);
+        logoSwapTimeoutId = setTimeout(() => {
+            navbarLogoImg.src = src;
+            navbarLogoImg.alt = alt;
+            navbarLogoImg.classList.toggle('profile-photo-mode', profileMode);
             navbarLogoImg.style.opacity = '1';
-            logoSwapTimeoutId = null;
-        }, 90);
+        }, 80);
     };
 
-    const setHeroMorphState = (hidden) => {
-        heroProfile.classList.add('morph-stable');
-        heroProfile.classList.toggle('morph-hidden', hidden);
-        heroProfile.style.pointerEvents = hidden ? 'none' : 'auto';
-    };
-
-    const resetHeroMorphState = () => {
-        heroProfile.classList.remove('morph-hidden');
-        heroProfile.classList.remove('morph-stable');
-        heroProfile.style.pointerEvents = 'auto';
-    };
-
+    // -- Move DOWN: hero -> logo -------------------------
     const moveToLogo = () => {
         if (isInLogoPosition || isAnimating) return;
         isAnimating = true;
 
+        // Snapshot rects BEFORE hiding anything
         const fromRect = heroProfile.getBoundingClientRect();
-        const toRect = navbarLogoImg.getBoundingClientRect();
+        const toRect   = navbarLogoImg.getBoundingClientRect();
 
-        setHeroMorphState(true);
+        // Hide hero photo -- clone will represent it during flight
+        heroProfile.style.opacity = '0';
 
-        animateImageBetweenRects(fromRect, toRect, profileSrc, profileAlt, () => {
-            swapNavbarLogo(profileSrc, profileAlt, true);
+        flyClone(fromRect, toRect, () => {
+            swapLogo(profileSrc, profileAlt, true);
             isInLogoPosition = true;
             isAnimating = false;
+            // heroProfile stays hidden -- it's now "in" the navbar
         });
     };
 
+    // -- Move UP: logo -> hero ---------------------------
     const moveBackToHero = () => {
         if (!isInLogoPosition || isAnimating) return;
         isAnimating = true;
 
+        // Snapshot logo rect BEFORE swapping it back
         const fromRect = navbarLogoImg.getBoundingClientRect();
 
-        setHeroMorphState(true);
+        // Swap logo back to original immediately (logo area shows
+        // original logo while clone is flying)
+        swapLogo(originalLogoSrc, originalLogoAlt, false);
 
+        // Snapshot hero rect -- it's invisible so layout is stable
         const toRect = heroProfile.getBoundingClientRect();
 
-        animateImageBetweenRects(fromRect, toRect, profileSrc, profileAlt, () => {
-            swapNavbarLogo(originalLogoSrc, originalLogoAlt, false);
+        flyClone(fromRect, toRect, () => {
+            // Fade hero photo back in cleanly
+            heroProfile.style.transition = 'opacity 0.35s ease';
+            heroProfile.style.opacity = '1';
 
-            requestAnimationFrame(() => {
-                resetHeroMorphState();
-                isInLogoPosition = false;
-                isAnimating = false;
-            });
+            // Clean up inline transition after fade completes
+            setTimeout(() => {
+                heroProfile.style.transition = '';
+            }, 380);
+
+            isInLogoPosition = false;
+            isAnimating = false;
         });
     };
 
-    const onScroll = () => {
+    // -- Scroll listener --------------------------------
+    window.addEventListener('scroll', () => {
         if (isAnimating) return;
-
-        if (!isInLogoPosition && window.scrollY > enterLogoScrollY) {
+        if (!isInLogoPosition && window.scrollY > ENTER_SCROLL) {
             moveToLogo();
-        } else if (isInLogoPosition && window.scrollY < exitLogoScrollY) {
+        } else if (isInLogoPosition && window.scrollY < EXIT_SCROLL) {
             moveBackToHero();
         }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    }, { passive: true });
 }
 
 function setupMobileMenu() {
@@ -308,6 +329,7 @@ function setupMobileMenu() {
 
 function populateSkills() {
     const skillsGrid = document.getElementById('skillsGrid');
+    if (!skillsGrid) return;
     skillsGrid.innerHTML = skills.map((skill, index) => `
         <div class="skill-card fade-in" style="animation-delay: ${index * 0.07}s">
             <h4>${skill.name}</h4>
@@ -440,196 +462,72 @@ function setupContactForm() {
 }
 
 /* ================================ */
-/* Portfolio Feedback               */
-/* ================================ */
-
-function setupPortfolioFeedback() {
-    const feedbackForm = document.getElementById('feedbackForm');
-    const feedbackStatus = document.getElementById('feedbackStatus');
-    const submitBtn = document.getElementById('feedbackSubmitBtn');
-
-    if (!feedbackForm || !feedbackStatus || !submitBtn) return;
-
-    const btnText = submitBtn.querySelector('.feedback-btn-text');
-    const feedbackMessageEl = document.getElementById('feedbackMessage');
-    const ratingInputs = feedbackForm.querySelectorAll('input[name="star-radio"]');
-
-    const getSupabaseClient = () => {
-        if (!window.supabase) {
-            console.error('[Feedback] Supabase SDK is not loaded. Check script tag in index.html.');
-            return null;
-        }
-        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-            console.error('[Feedback] Missing SUPABASE_URL or SUPABASE_ANON_KEY.');
-            return null;
-        }
-        if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
-            console.error('[Feedback] Supabase credentials are placeholders.');
-            return null;
-        }
-        return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    };
-
-    const setFeedbackButtonState = (state) => {
-        submitBtn.classList.remove('is-loading', 'is-success', 'is-error');
-        submitBtn.removeAttribute('aria-busy');
-
-        if (state === 'loading') {
-            submitBtn.classList.add('is-loading');
-            submitBtn.setAttribute('aria-busy', 'true');
-            submitBtn.disabled = true;
-            btnText.textContent = 'Submitting...';
-            return;
-        }
-
-        if (state === 'success') {
-            submitBtn.classList.add('is-success');
-            submitBtn.disabled = true;
-            btnText.textContent = 'Thanks for your feedback!';
-            return;
-        }
-
-        if (state === 'error') {
-            submitBtn.classList.add('is-error');
-            submitBtn.disabled = false;
-            btnText.textContent = 'Try Again';
-            return;
-        }
-
-        submitBtn.disabled = false;
-        btnText.textContent = 'Submit Feedback';
-    };
-
-    const wait = (ms) => new Promise((resolve) => {
-        window.setTimeout(resolve, ms);
-    });
-
-    feedbackForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const selectedRating = feedbackForm.querySelector('input[name="star-radio"]:checked');
-        const feedbackMessage = feedbackMessageEl ? feedbackMessageEl.value.trim() : '';
-        const supabaseClient = getSupabaseClient();
-
-        feedbackStatus.classList.remove('is-success', 'is-error');
-
-        if (!selectedRating) {
-            setFeedbackButtonState('idle');
-            feedbackStatus.textContent = 'Please select a star rating.';
-            feedbackStatus.classList.add('is-error');
-            return;
-        }
-
-        if (!feedbackMessage) {
-            setFeedbackButtonState('idle');
-            feedbackStatus.textContent = 'Please add your feedback message.';
-            feedbackStatus.classList.add('is-error');
-            return;
-        }
-
-        // Trigger modern SaaS-style button morph and progress fill.
-        setFeedbackButtonState('loading');
-        await wait(760);
-
-        try {
-            if (!supabaseClient) {
-                throw new Error('Supabase not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.');
-            }
-
-            console.groupCollapsed('[Feedback] Insert attempt');
-            console.log('Supabase URL:', SUPABASE_URL);
-            console.log('Table:', FEEDBACK_TABLE);
-            console.log('Payload:', {
-                rating: Number(selectedRating.value),
-                message: feedbackMessage
-            });
-
-            const { error } = await supabaseClient
-                .from(FEEDBACK_TABLE)
-                .insert([{ rating: Number(selectedRating.value), message: feedbackMessage }]);
-
-            if (error) {
-                console.error('[Feedback] Supabase insert error:', {
-                    message: error.message,
-                    code: error.code,
-                    details: error.details,
-                    hint: error.hint
-                });
-
-                if (error.code === '42501') {
-                    console.error('[Feedback] RLS policy likely blocks INSERT for anon role. Add an INSERT policy for table Feedback.');
-                }
-
-                if (error.code === '42P01') {
-                    console.error('[Feedback] Table not found. Confirm exact table name and case. Current table target: Feedback');
-                }
-
-                console.groupEnd();
-                throw error;
-            }
-
-            console.log('[Feedback] Insert successful');
-            console.groupEnd();
-
-            setFeedbackButtonState('success');
-            feedbackStatus.textContent = '';
-            feedbackStatus.classList.remove('is-success');
-        } catch (error) {
-            console.error('Feedback submission error:', error);
-            setFeedbackButtonState('error');
-            feedbackStatus.textContent = 'Error submitting feedback';
-            feedbackStatus.classList.add('is-error');
-
-            if (typeof console.groupEnd === 'function') {
-                try { console.groupEnd(); } catch (eGroup) { /* no-op */ }
-            }
-        }
-    });
-
-    // Keep success state until user edits rating/message again.
-    const resetOnEdit = () => {
-        if (submitBtn.classList.contains('is-success') || submitBtn.classList.contains('is-error')) {
-            setFeedbackButtonState('idle');
-            feedbackStatus.textContent = '';
-            feedbackStatus.classList.remove('is-success', 'is-error');
-        }
-    };
-
-    if (feedbackMessageEl) {
-        feedbackMessageEl.addEventListener('input', resetOnEdit);
-    }
-
-    ratingInputs.forEach((input) => {
-        input.addEventListener('change', resetOnEdit);
-    });
-}
-
-/* ================================ */
 /* Intersection Observer            */
 /* ================================ */
 
 function setupIntersectionObserver() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Animate once for a polished, non-distracting reveal effect.
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
             }
-        });
-    }, observerOptions);
+        );
 
-    // Observe all fade-in elements that are not part of hero
-    document.querySelectorAll('.fade-in:not(.hero-content .fade-in-up)').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
-        el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-        observer.observe(el);
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+}
+
+function setupMobileProjectThumbnailPreview() {
+    const isMobileLike = window.matchMedia('(max-width: 767px), (hover: none), (pointer: coarse)').matches;
+    if (!isMobileLike) return;
+
+    const projectCards = Array.from(document.querySelectorAll('#projects .project-card')).filter((card) => {
+        return card.querySelector('.project-thumb.webscraper-thumb, .project-thumb.sudoku-thumb');
     });
+
+    if (!projectCards.length) return;
+
+    const thumbObserver = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                entry.target.classList.toggle('mobile-thumb-preview', entry.isIntersecting);
+            });
+        },
+        {
+            threshold: 0.35,
+            rootMargin: '0px 0px -12% 0px'
+        }
+    );
+
+    projectCards.forEach((card) => {
+        thumbObserver.observe(card);
+    });
+}
+
+function setupSkillsProgressObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width') + '%';
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.skills-grid').forEach(grid => {
+            observer.observe(grid);
+        });
 }
 
 /* ================================ */
@@ -769,8 +667,74 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 function applyTheme(theme) {
     const isLight = theme === 'light';
     document.body.classList.toggle('light', isLight);
+    document.body.classList.toggle('dark-mode', !isLight);
     const btn = document.getElementById('theme-toggle');
     if (btn) btn.textContent = isLight ? '☀️' : '🌙';
+    updateDarkModeBackgroundMotion();
+}
+
+let _dmBgMotionBound = false;
+let _dmBgMotionRaf = null;
+let _dmCurrentGlowY = 24;
+let _dmCurrentGlowAlpha = 0.12;
+let _dmTargetGlowY = 24;
+let _dmTargetGlowAlpha = 0.12;
+
+function applyDarkModeBackgroundVars() {
+    document.body.style.setProperty('--dm-glow-y', `${_dmCurrentGlowY.toFixed(2)}%`);
+    document.body.style.setProperty('--dm-glow-alpha', _dmCurrentGlowAlpha.toFixed(3));
+}
+
+function animateDarkModeBackgroundVars() {
+    _dmBgMotionRaf = null;
+    if (!document.body.classList.contains('dark-mode')) return;
+
+    const lerp = 0.085;
+    _dmCurrentGlowY += (_dmTargetGlowY - _dmCurrentGlowY) * lerp;
+    _dmCurrentGlowAlpha += (_dmTargetGlowAlpha - _dmCurrentGlowAlpha) * lerp;
+
+    applyDarkModeBackgroundVars();
+
+    const done =
+        Math.abs(_dmCurrentGlowY - _dmTargetGlowY) < 0.01 &&
+        Math.abs(_dmCurrentGlowAlpha - _dmTargetGlowAlpha) < 0.001;
+
+    if (!done) {
+        _dmBgMotionRaf = window.requestAnimationFrame(animateDarkModeBackgroundVars);
+    }
+}
+
+function updateDarkModeBackgroundMotion() {
+    if (!document.body.classList.contains('dark-mode')) return;
+
+    const scrollTop = window.scrollY || window.pageYOffset || 0;
+    const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const progress = Math.min(scrollTop / scrollRange, 1);
+
+    // Keep motion very subtle and slow for a premium cinematic backdrop.
+    _dmTargetGlowY = 24 + progress * 8;
+    _dmTargetGlowAlpha = 0.11 + progress * 0.02;
+
+    if (_dmBgMotionRaf === null) {
+        _dmBgMotionRaf = window.requestAnimationFrame(animateDarkModeBackgroundVars);
+    }
+}
+
+function setupDarkModeBackgroundMotion() {
+    if (_dmBgMotionBound) {
+        updateDarkModeBackgroundMotion();
+        return;
+    }
+
+    const onScroll = () => {
+        updateDarkModeBackgroundMotion();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    _dmBgMotionBound = true;
+    updateDarkModeBackgroundMotion();
 }
 
 function setupThemeToggle() {
@@ -792,6 +756,64 @@ function setupThemeToggle() {
         const next = currentIsLight ? 'dark' : 'light';
         applyTheme(next);
         localStorage.setItem('theme', next);
+    });
+
+    setupThemeTutorialPopup(btn);
+}
+
+function setupThemeTutorialPopup(themeButton) {
+    const popup = document.getElementById('theme-tutorial');
+    const closeBtn = document.getElementById('theme-tutorial-close');
+    const gotItBtn = document.getElementById('theme-tutorial-gotit');
+    if (!popup || !themeButton) return;
+
+    const SEEN_KEY = 'themeTutorialSeen';
+    const hasSeen = localStorage.getItem(SEEN_KEY) === 'true';
+    if (hasSeen) return;
+
+    let popupTimer = null;
+
+    const hidePopup = () => {
+        if (popupTimer) {
+            window.clearTimeout(popupTimer);
+            popupTimer = null;
+        }
+        popup.classList.remove('is-visible');
+        window.setTimeout(() => {
+            popup.hidden = true;
+        }, 230);
+        localStorage.setItem(SEEN_KEY, 'true');
+    };
+
+    const showPopup = () => {
+        if (localStorage.getItem(SEEN_KEY) === 'true') return;
+        popup.hidden = false;
+        window.requestAnimationFrame(() => {
+            popup.classList.add('is-visible');
+        });
+    };
+
+    // Show after a short reading window so users can first notice current mode.
+    const POPUP_DELAY_MS = 6000;
+    popupTimer = window.setTimeout(showPopup, POPUP_DELAY_MS);
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hidePopup);
+    }
+
+    if (gotItBtn) {
+        gotItBtn.addEventListener('click', hidePopup);
+    }
+
+    themeButton.addEventListener('click', () => {
+        localStorage.setItem(SEEN_KEY, 'true');
+        if (!popup.hidden) hidePopup();
+    }, { once: true });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !popup.hidden) {
+            hidePopup();
+        }
     });
 }
 
