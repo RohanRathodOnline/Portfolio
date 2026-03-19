@@ -343,14 +343,12 @@ function populateSkills() {
 /* ================================ */
 
 function setupContactForm() {
-    const contactForm = document.getElementById('contactForm');
+    const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('contactSubmitBtn');
-    
     if (!contactForm || !submitBtn) {
         console.warn('Contact form not found');
         return;
     }
-
     const btnText = submitBtn.querySelector('.feedback-btn-text');
     const formInputs = [
         document.getElementById('name'),
@@ -358,105 +356,102 @@ function setupContactForm() {
         document.getElementById('message')
     ].filter(Boolean);
 
-    const setContactButtonState = (state) => {
-        submitBtn.classList.remove('is-loading', 'is-success', 'is-error');
-        submitBtn.removeAttribute('aria-busy');
+    function setButtonLoading(loading) {
+        submitBtn.disabled = loading;
+        if (btnText) btnText.textContent = loading ? 'Sending...' : 'Send Message';
+    }
 
-        if (state === 'loading') {
-            submitBtn.classList.add('is-loading');
-            submitBtn.setAttribute('aria-busy', 'true');
-            submitBtn.disabled = true;
-            btnText.textContent = 'Sending...';
-            return;
+    function showFormMessage(msg, type = 'success') {
+        let msgDiv = contactForm.querySelector('.form-status-msg');
+        if (!msgDiv) {
+            msgDiv = document.createElement('div');
+            msgDiv.className = 'form-status-msg';
+            msgDiv.style.marginTop = '1em';
+            msgDiv.style.fontWeight = 'bold';
+            msgDiv.style.textAlign = 'center';
+            contactForm.appendChild(msgDiv);
         }
+        msgDiv.textContent = msg;
+        msgDiv.style.color = type === 'success' ? 'green' : 'red';
+    }
 
-        if (state === 'success') {
-            submitBtn.classList.add('is-success');
-            submitBtn.disabled = true;
-            btnText.textContent = 'Message Sent!';
-            return;
+    async function ensureEmailJSLoadedAndInit() {
+        for (let i = 0; i < 40; i++) { // Wait up to ~4s
+            if (window.emailjs) break;
+            await new Promise(res => setTimeout(res, 100));
         }
-
-        if (state === 'error') {
-            submitBtn.classList.add('is-error');
-            submitBtn.disabled = false;
-            btnText.textContent = 'Try Again';
-            return;
+        if (!window.emailjs) {
+            console.error('EmailJS SDK not loaded');
+            alert('Email service not loaded');
+            return false;
         }
-
-        submitBtn.disabled = false;
-        btnText.textContent = 'Send Message';
-    };
-
-    const wait = (ms) => new Promise((resolve) => {
-        window.setTimeout(resolve, ms);
-    });
+        if (!window.__emailjs_inited) {
+            try {
+                window.emailjs.init(EMAILJS_PUBLIC_KEY);
+                window.__emailjs_inited = true;
+                console.log('EmailJS initialized');
+            } catch (e) {
+                console.error('EmailJS init error', e);
+                alert('Email service not loaded');
+                return false;
+            }
+        } else {
+            console.log('EmailJS already initialized');
+        }
+        return true;
+    }
 
     const resetOnEdit = () => {
-        if (submitBtn.classList.contains('is-success') || submitBtn.classList.contains('is-error')) {
-            setContactButtonState('idle');
-        }
+        showFormMessage('', 'success');
+        setButtonLoading(false);
     };
-
     formInputs.forEach((inputEl) => {
         inputEl.addEventListener('input', resetOnEdit);
     });
-    
+
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        // Validate
-        if (!name || !email || !message) {
-            setContactButtonState('error');
-            alert('Please fill out all fields');
+        setButtonLoading(true);
+        showFormMessage('', 'success');
+
+        // Wait for EmailJS SDK and init
+        const ready = await ensureEmailJSLoadedAndInit();
+        if (!ready) {
+            setButtonLoading(false);
+            showFormMessage('Email service not loaded. Please try again later.', 'error');
             return;
         }
-
-        // Check EmailJS config before attempting to send
         if (!emailjsConfigValid()) {
-            setContactButtonState('error');
-            alert('EmailJS is not configured. Please open script-vanilla.js and set EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, and EMAILJS_TEMPLATE_ID.');
+            setButtonLoading(false);
+            showFormMessage('Email service not configured. Please try again later.', 'error');
             return;
         }
 
-        setContactButtonState('loading');
-        await wait(760);
+        // Get form data
+        const formData = {
+            name: contactForm.name.value.trim(),
+            email: contactForm.email.value.trim(),
+            message: contactForm.message.value.trim(),
+        };
+
+        if (!formData.name || !formData.email || !formData.message) {
+            setButtonLoading(false);
+            showFormMessage('Please fill out all fields.', 'error');
+            return;
+        }
 
         try {
-            // Use EmailJS to send the message (vanilla JS)
-            await loadEmailJSSDK();
-
-            if (!window.emailjs) throw new Error('EmailJS SDK not available');
-            // initialize if not already
-            try {
-                if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
-                    window.emailjs.init(EMAILJS_PUBLIC_KEY);
-                }
-            } catch (initErr) {
-                // ignore init errors
-            }
-
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                message: message
-            };
-
-            // Send via EmailJS
-            await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-
-            setContactButtonState('success');
+            const result = await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formData);
+            console.log('EmailJS send success', result);
+            setButtonLoading(false);
+            submitBtn.classList.add('is-success');
+            if (btnText) btnText.textContent = 'Message Sent!';
+            submitBtn.disabled = true;
             contactForm.reset();
-
-        } catch (error) {
-            console.error('Email send error (detailed):', error);
-            const msg = extractErrorMessage(error);
-            setContactButtonState('error');
-            alert(`❌ Error: ${msg}`);
+        } catch (err) {
+            console.error('EmailJS send error', err);
+            setButtonLoading(false);
+            showFormMessage('Failed to send message. Please try again.', 'error');
         }
     });
 }
@@ -741,14 +736,10 @@ function setupThemeToggle() {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
 
-    // Determine initial theme: saved preference or system preference
-    const saved = localStorage.getItem('theme');
-    let theme = saved;
-    if (!theme) {
-        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        theme = prefersLight ? 'light' : 'dark';
-    }
 
+    // Always default to light mode unless user has chosen
+    const saved = localStorage.getItem('theme');
+    let theme = saved || 'light';
     applyTheme(theme);
 
     btn.addEventListener('click', () => {

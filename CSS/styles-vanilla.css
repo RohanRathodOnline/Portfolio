@@ -1,3 +1,62 @@
+.dark-mode .feedback-submit-btn.is-success {
+    background: linear-gradient(90deg, #e5e7eb 60%, #cbd5e1 100%);
+    color: #23272f;
+    box-shadow: 0 0 18px 0 rgba(200,210,230,0.18), 0 0 0 0 #e5e7eb;
+    border: 2px solid #cbd5e1;
+    animation: darkSuccessPulse 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.dark-mode .feedback-submit-btn.is-success .feedback-btn-text {
+    color: #23272f;
+    text-shadow: 0 1px 8px #fff, 0 0 2px #e2e8f0;
+    animation: sentTextPop 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.dark-mode .feedback-submit-btn.is-success .feedback-check-icon {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 2px #e2e8f0);
+    transition: opacity 220ms, transform 220ms, filter 320ms;
+}
+@keyframes darkSuccessPulse {
+    0% { box-shadow: 0 0 0 0 #cbd5e1, 0 0 18px 0 rgba(200,210,230,0.18); transform: scale(1); }
+    30% { box-shadow: 0 0 0 12px #cbd5e1, 0 0 18px 0 rgba(200,210,230,0.18); transform: scale(1.08); }
+    60% { box-shadow: 0 0 0 18px #cbd5e1, 0 0 18px 0 rgba(200,210,230,0.10); transform: scale(1.03); }
+    100% { box-shadow: 0 0 0 0 #cbd5e1, 0 0 18px 0 rgba(200,210,230,0.06); transform: scale(1); }
+}
+.feedback-submit-btn.is-success {
+    background: #16a34a;
+    color: #f0fdf4;
+    box-shadow: 0 0 28px -8px rgba(22,163,74,0.9);
+}
+.feedback-submit-btn.is-success .feedback-check-icon {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+.feedback-submit-btn.is-success .feedback-check-path {
+    animation: feedback-check-draw 520ms cubic-bezier(0.65,0,0.35,1) forwards;
+}
+@keyframes feedback-check-draw {
+    to { stroke-dashoffset: 0; }
+}
+.feedback-submit-btn.is-success .feedback-btn-text {
+    animation: sentTextPop 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes sentTextPop {
+    0% { transform: scale(1); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.skill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    vertical-align: middle;
+}
+.light-only { display: inline; }
+.dark-only { display: none; }
+body.dark-mode .light-only { display: none !important; }
+body.dark-mode .dark-only { display: inline-flex !important; }
 /* ================================ */
 /* Root Variables & Base Styles     */
 /* ================================ */
